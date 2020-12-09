@@ -2,18 +2,33 @@
 # This code is written by Ali Babolhavaeji at 12/8/2020
 
 from flask import Flask
-from flask_sqlalchemy import  SQLAlchemy
+# from flask_sqlalchemy import  SQLAlchemy
+import mysql.connector
 
 
 
-db = SQLAlchemy()
+# db = SQLAlchemy()
+
+def create_db():
+    db = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="132",
+        database="pythonprog"
+    )
+
+    return db
+
+db =create_db()
+
 
 def create_app():
     app = Flask(__name__)
 
-    # app.config["SECRET_KEY"] = 'secret-key-goes-here'
+    app.config["SECRET_KEY"] = 'secret-key-goes-here'
     # app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
     # db.init_app(app)
+
 
     from .auth import auth as auth_blueprint
     from .main import main as main_blueprint
