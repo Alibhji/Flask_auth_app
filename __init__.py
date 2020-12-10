@@ -4,6 +4,7 @@
 from flask import Flask
 # from flask_sqlalchemy import  SQLAlchemy
 import mysql.connector
+from flask_login import LoginManager
 
 
 
@@ -16,10 +17,22 @@ def create_db():
         password="132",
         database="pythonprog"
     )
-
     return db
 
+def get_data__from_sql(db , column , value ):
+    db_cur = db.cursor(buffered=True)
+    sql = "SELECT %s FROM users WHERE %s=" % (str(column).lower() ,str(column).lower())
+    sql = sql+"%s"
+    # sql = "SELECT * FROM users WHERE uid=%s"
+    db_cur.execute(sql, (str(value).lower(),))
+    # db_cur.execute(sql, ( str(value),))
+    res = db_cur.fetchone()
+    db_cur.close()
+    return None if res is None else res[0]
+
 db =create_db()
+
+
 
 
 def create_app():
@@ -30,10 +43,20 @@ def create_app():
     # db.init_app(app)
 
 
+
     from .auth import auth as auth_blueprint
     from .main import main as main_blueprint
     app.register_blueprint(auth_blueprint)
     app.register_blueprint(main_blueprint)
+
+    login_manager = LoginManager()
+    login_manager.init_app(app)
+
+    @login_manager.user_loader
+    def load_user(user):
+        return "A"
+
+
     # # blueprint for auth routes in our app
     # from .auth import auth as auth_blueprint
     # app.register_blueprint(auth_blueprint)

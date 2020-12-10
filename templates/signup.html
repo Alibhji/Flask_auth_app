@@ -11,8 +11,8 @@
 
         {% with messages = get_flashed_messages() %}
             {% if messages %}
-                <div class="notification is-danger">
-                {{ messages[0] }}. <br> Please chose another username.
+{#                <div class="notification is-danger">#}
+                <div class="notification is-{{messages[0]['type'] }} }}"> {{ messages[0]['msg'] }}</div>
                 </div>
             {% endif %}
         {% endwith %}
