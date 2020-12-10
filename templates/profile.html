@@ -2,6 +2,12 @@
 
 {% block content %}
 <h1 class="title">
-  Welcome, Anthony!
+  Welcome, {{ current_user.username }}!
 </h1>
+
+{#<button type="button" onclick="window.location.href='{{ url_for( 'auth.logout') }}';">Display Table Y</button>#}
+
+    <div class="buttons">
+  <button class="button is-link is-light" onclick="window.location.href='{{ url_for( 'auth.logout') }}'; ">Logout</button>
+    </div>
 {% endblock %}

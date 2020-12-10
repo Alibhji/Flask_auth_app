@@ -11,12 +11,12 @@ from . import db , get_data__from_sql
 
 
 class UserModel(UserMixin):
-    def __init__(self , username, active =True):
+    def __init__(self , id, active =True):
 
         # self.username = username
         # self.password = password
         # self.email = email
-        # self.active = active
+        self.active = active
 
 
         # db_cur = db.cursor()
@@ -24,8 +24,19 @@ class UserModel(UserMixin):
         # db_cur.execute(get_id, (str(id),))
         # res = db_cur.fetchone()
         # db_cur.close()
-        self.username = get_data__from_sql(db, "email", username)
+        self.id = id
+
+        if self.id is not None:
+            self.email = get_data__from_sql(db, "email",  "uid" , id)
+            self.password = get_data__from_sql(db, "psssword", "uid", id)
+            self.username = get_data__from_sql(db, "username", "uid", id)
+
+        else:
+            self.email = None
+            self.username = None
+            self.password = None
+
         # self.id = get_data__from_sql(db , "uid" , id)
 
-    def get_id(self):
-        return 5
+    # def get_id(self):
+    #     return (self.id)

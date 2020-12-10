@@ -19,9 +19,9 @@ def create_db():
     )
     return db
 
-def get_data__from_sql(db , column , value ):
+def get_data__from_sql(db , from_column, where_column  , value ):
     db_cur = db.cursor(buffered=True)
-    sql = "SELECT %s FROM users WHERE %s=" % (str(column).lower() ,str(column).lower())
+    sql = "SELECT %s FROM users WHERE %s=" % (str(from_column).lower() ,str(where_column).lower())
     sql = sql+"%s"
     # sql = "SELECT * FROM users WHERE uid=%s"
     db_cur.execute(sql, (str(value).lower(),))
@@ -31,7 +31,7 @@ def get_data__from_sql(db , column , value ):
     return None if res is None else res[0]
 
 db =create_db()
-
+from .models import UserModel
 
 
 
@@ -51,10 +51,11 @@ def create_app():
 
     login_manager = LoginManager()
     login_manager.init_app(app)
+    login_manager.login_view = "auth.login"
 
     @login_manager.user_loader
-    def load_user(user):
-        return "A"
+    def load_user(id):
+        return UserModel(id)
 
 
     # # blueprint for auth routes in our app
